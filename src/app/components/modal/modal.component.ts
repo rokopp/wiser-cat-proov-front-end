@@ -37,12 +37,18 @@ export class ModalComponent implements OnInit {
   addFieldValue(type): void {
     if (type === 'Amount') {
       this.filters.amounts.push(this.newAttribute);
+      this.newAttribute.filterId = this.filters.id;
+      this.amounts.push(this.newAttribute);
     }
     if (type === 'Title') {
       this.filters.titles.push(this.newAttribute);
+      this.newAttribute.filterId = this.filters.id;
+      this.titles.push(this.newAttribute);
     }
     if (type === 'Date') {
       this.filters.dates.push(this.newAttribute);
+      this.newAttribute.filterId = this.filters.id;
+      this.dates.push(this.newAttribute);
     }
     this.newAttribute = {};
   }
@@ -69,6 +75,45 @@ export class ModalComponent implements OnInit {
     }
     if (this.newAttribute.type === 'Date') {
       this.selectCriteriaType = this.dateCriteriaType;
+    }
+  }
+
+  saveFilter(): void {
+    this.saveAmount();
+    this.saveTitle();
+    this.saveDate();
+  }
+
+  saveAmount(): void {
+    if (this.amounts.length !== 0) {
+      this.amounts.forEach(saveAmounts => {
+        this.filterService.postAmount(saveAmounts).subscribe(amount => {
+          console.log(amount);
+        });
+      });
+      this.amounts = [];
+    }
+  }
+
+  saveTitle(): void {
+    if (this.titles.length !== 0) {
+      this.titles.forEach(saveTitles => {
+        this.filterService.postTitle(saveTitles).subscribe(title => {
+          console.log(title);
+        });
+      });
+      this.titles = [];
+    }
+  }
+
+  saveDate(): void {
+    if (this.dates.length !== 0) {
+      this.dates.forEach(saveDates => {
+        this.filterService.postDate(saveDates).subscribe(date => {
+          console.log(date);
+        });
+      });
+      this.dates = [];
     }
   }
 }

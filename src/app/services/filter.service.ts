@@ -33,6 +33,7 @@ export class FilterService {
   removeFilter(id: number): Observable<Filter>{
     return this.http.delete<Filter>(this.filterUrl + '/' + id);
   }
+
   postFilter(filterObj): Observable<Filter> {
     return this.http.post<Filter>(this.filterUrl, filterObj, {});
   }
@@ -41,12 +42,23 @@ export class FilterService {
     return this.http.get<Amount[]>(this.amountUrl + '/filters/' + id);
   }
 
+  postAmount(amountObj): Observable<Amount> {
+    return this.http.post<Amount>(this.amountUrl, amountObj, {});
+  }
+
   getTitleByFilterId(id: number): Observable<Title[]>{
     return this.http.get<Title[]>(this.titleUrl + '/filters/' + id);
+  }
+
+  postTitle(titleObj): Observable<Title> {
+    return this.http.post<Title>(this.titleUrl, titleObj, {});
   }
 
   getDateByFilterId(id: number): Observable<Date[]>{
     return this.http.get<Date[]>(this.dateUrl + '/filters/' + id);
   }
 
+  postDate(dateObj): Observable<Date> {
+    return this.http.post<Date>(this.dateUrl, dateObj, {});
+  }
 }
