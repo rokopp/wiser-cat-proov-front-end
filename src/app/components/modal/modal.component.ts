@@ -14,7 +14,14 @@ export class ModalComponent implements OnInit {
   amounts: Amount[] = [];
   titles: Title[] = [];
   dates: Date[] = [];
-  criteria: any[] = [];
+
+  filterTypes = ['Amount', 'Title', 'Date'];
+  selectCriteriaType = [];
+  amountCriteriaType = ['More', 'Less', 'Equal'];
+  titleCriteriaType = ['Starts with', 'Ends with'];
+  dateCriteriaType = ['From', 'Before'];
+
+  newAttribute: any = {};
 
   constructor(private modalService: NgbModal,
               private filterService: FilterService
@@ -25,56 +32,43 @@ export class ModalComponent implements OnInit {
 
   open(content, id): void {
     this.modalService.open(content, { size: 'xl' });
-    this.createCriteriaList(id);
   }
 
-  createCriteriaList(id): void {
-    this.getAmountByFilterId(id);
-    this.getTitlesByFilterId(id);
-    this.getDateByFilterId(id);
-    console.log(this.criteria);
+  addFieldValue(type): void {
+    if (type === 'Amount') {
+      this.filters.amounts.push(this.newAttribute);
+    }
+    if (type === 'Title') {
+      this.filters.titles.push(this.newAttribute);
+    }
+    if (type === 'Date') {
+      this.filters.dates.push(this.newAttribute);
+    }
+    this.newAttribute = {};
   }
 
-  emptyCriteriaList(): void {
-    this.criteria = [];
+  // TODO update with API call
+  deleteFieldValue(index, type): void {
+    if (type === 'amount') {
+      this.filters.amounts.splice(index, 1);
+    }
+    if (type === 'title') {
+      this.filters.titles.splice(index, 1);
+    }
+    if (type === 'date') {
+      this.filters.dates.splice(index, 1);
+    }
   }
 
-  getAmountByFilterId(id: number): void {
-    this.filterService.getAmountByFilterId(id).subscribe(amount => {
-      this.amounts = amount;
-      this.criteria.push({
-        amount,
-        name: 'Amount'
-      });
-    });
-  }
-
-  getTitlesByFilterId(id: number): void {
-    this.filterService.getTitleByFilterId(id).subscribe(title => {
-      this.titles = title;
-      // this.criteria.push(title);
-
-    });
-  }
-
-  getDateByFilterId(id: number): void {
-    this.filterService.getDateByFilterId(id).subscribe(date => {
-      this.dates = date;
-      // this.criteria.push(date);
-    });
-  }
-
-  addRow(): void {
-    console.log('Add');
-    this.criteria.push({
-      name: ''
-    });
-  }
-
-  removeRow(id): void {
-    this.criteria.forEach((element, index) => {
-      console.log(element);
-      if (element === id) { this.criteria.splice(index, 1); }
-    });
+  getSelectedCriteria(): void {
+    if (this.newAttribute.type === 'Amount') {
+      this.selectCriteriaType = this.amountCriteriaType;
+    }
+    if (this.newAttribute.type === 'Title') {
+      this.selectCriteriaType = this.titleCriteriaType;
+    }
+    if (this.newAttribute.type === 'Date') {
+      this.selectCriteriaType = this.dateCriteriaType;
+    }
   }
 }

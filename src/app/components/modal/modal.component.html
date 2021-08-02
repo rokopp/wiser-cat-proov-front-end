@@ -1,7 +1,7 @@
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Filter update</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(); emptyCriteriaList()">
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -17,41 +17,121 @@
         <h2 class="col-sm-2 col-form-label">Criteria</h2>
         <table>
           <tbody>
-            <tr *ngFor="let criteriaOb of criteria; index as i">
-              {{criteriaOb.name}}
-              <th *ngFor="let criteriaSm of criteriaOb.amount">
-                <select class="form-select">
-                  <option selected>{{criteriaSm.compareCondition}}</option>
-                  <option value="1">Title</option>
-                  <option value="2">Date</option>
-                </select>
-              </th>
-              <th>
-                <select class="form-select">
-<!--                  <option selected *ngFor="let amount of criteriaOb">{{amount.compareCondition}}</option>-->
-                  <option value="1">Less</option>
-                  <option value="2">Equal</option>
-                </select>
-              </th>
-              <th>
-                <input type="number">
-              </th>
-              <th>
-                <button type="button" (click)="removeRow(i)">X</button>
-              </th>
-            </tr>
-            <tr>
-              <th>
-                <button type="button" (click)="addRow()">Add Row</button>
-              </th>
-            </tr>
+          <tr *ngFor="let field of filters.amounts; let i = index">
+            <td>
+              <select class="form-control">
+                <option *ngFor="let type of filterTypes"
+                        [ngValue]="type"
+                        [selected]="type === field.type"
+                >
+                  {{type}}
+                </option>
+              </select>
+            </td>
+            <td>
+              <select class="form-control">
+                <option *ngFor="let type of amountCriteriaType"
+                        [ngValue]="type"
+                        [selected]="type === field.compareCondition"
+                >
+                  {{type}}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="number" id="newAttributeNumber" [(ngModel)]="field.number" name="newAttributeNumber" />
+            </td>
+            <td>
+              <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'amount')">Delete</button>
+            </td>
+          </tr>
+          <tr *ngFor="let field of filters.titles; let i = index">
+            <td>
+              <select class="form-control">
+                <option *ngFor="let type of filterTypes"
+                        [ngValue]="type"
+                        [selected]="type === field.type"
+                >
+                  {{type}}
+                </option>
+              </select>
+            </td>
+            <td>
+              <select class="form-control">
+                <option *ngFor="let type of titleCriteriaType"
+                        [ngValue]="type"
+                        [selected]="type === field.compareCondition"
+                >
+                  {{type}}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" id="titleTextUpdate" [(ngModel)]="field.text" name="titleTextUpdate" />
+            </td>
+            <td>
+              <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'title')">Delete</button>
+            </td>
+          </tr>
+          <tr *ngFor="let field of filters.dates; let i = index">
+            <td>
+              <select class="form-control">
+                <option *ngFor="let type of filterTypes"
+                        [ngValue]="type"
+                        [selected]="type === field.type"
+                >
+                  {{type}}
+                </option>
+              </select>
+            </td>
+            <td>
+              <select class="form-control">
+                <option *ngFor="let type of dateCriteriaType"
+                        [ngValue]="type"
+                        [selected]="type === field.compareCondition"
+                >
+                  {{type}}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="date" id="dateUpdate" [(ngModel)]="field.date" name="dateUpdate" />
+            </td>
+            <td>
+              <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'date')">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <select [(ngModel)]="newAttribute.type" name="selectType" id='selectType' class="form-control" (change)="getSelectedCriteria()">
+                <option *ngFor="let type of filterTypes" [ngValue]="type">
+                  {{type}}
+                </option>
+              </select>
+            </td>
+            <td>
+              <select [(ngModel)]="newAttribute.compareCondition" name="selectCriteria" id='selectCriteria' class="form-control">
+                <option *ngFor="let criteria of selectCriteriaType" [ngValue]="criteria">
+                  {{criteria}}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input *ngIf="newAttribute.type === 'Amount'" class="form-control" type="number" id="saveNumber" [(ngModel)]="newAttribute.number" name="saveNumber" />
+              <input *ngIf="newAttribute.type === 'Title'" class="form-control" type="text" id="saveTitle" [(ngModel)]="newAttribute.text" name="saveTitle" />
+              <input *ngIf="newAttribute.type === 'Date'" class="form-control" type="date" id="saveDate" [(ngModel)]="newAttribute.date" name="saveDate" />
+            </td>
+            <td>
+              <button class="btn btn-default" type="button" (click)="addFieldValue(newAttribute.type)">Add</button>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click'); emptyCriteriaList()">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
   </div>
 </ng-template>
 
