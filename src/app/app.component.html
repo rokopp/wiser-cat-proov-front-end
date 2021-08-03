@@ -1,16 +1,14 @@
 <div class="content" role="main">
-  <table class="table">
+  <table class="table w-50 mx-auto">
     <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Filter Name</th>
+    <tr align="center">
+      <th class="mx-auto" scope="col">Filter Name</th>
     </tr>
     </thead>
-    <tr *ngFor="let filter of filters; index as i">
-      <th scope="row">{{ i }}</th>
+    <tr align="center" *ngFor="let filter of filters; index as i">
       <app-modal [filters]="filter" [newFilter]="false"></app-modal>
     </tr>
-    <tr>
+    <tr align="center">
       <th>
         <app-modal [filters]="" [newFilter]="true"></app-modal>
       </th>
