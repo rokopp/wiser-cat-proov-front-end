@@ -10,14 +10,15 @@
       <div class="form-group row">
         <label for="filterName" class="col-sm-2 col-form-label">Filter name</label>
         <div class="col-sm-10">
-          <input id="filterName" class="form-control" value="{{filters.filterName}}">
+          <input *ngIf="!newFilter" id="filterName" class="form-control" name="updateFilterName" [(ngModel)]="newAttribute.filterName">
+          <input *ngIf="newFilter" id="newfilterName" class="form-control" name="newFilterName" [(ngModel)]="newAttribute.filterName">
         </div>
       </div>
       <div class="form-group row">
         <h2 class="col-sm-2 col-form-label">Criteria</h2>
         <table>
           <tbody>
-          <tr *ngFor="let field of filters.amounts; let i = index">
+          <tr *ngFor="let field of filters?.amounts; let i = index">
             <td>
               <select class="form-control">
                 <option *ngFor="let type of filterTypes"
@@ -45,7 +46,8 @@
               <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'amount')">Delete</button>
             </td>
           </tr>
-          <tr *ngFor="let field of filters.titles; let i = index">
+
+          <tr *ngFor="let field of filters?.titles; let i = index">
             <td>
               <select class="form-control">
                 <option *ngFor="let type of filterTypes"
@@ -73,7 +75,7 @@
               <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'title')">Delete</button>
             </td>
           </tr>
-          <tr *ngFor="let field of filters.dates; let i = index">
+          <tr *ngFor="let field of filters?.dates; let i = index">
             <td>
               <select class="form-control">
                 <option *ngFor="let type of filterTypes"
@@ -131,8 +133,10 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click'); saveFilter(filters.id)">Save</button>
+    <button type="button" class="btn btn-outline-dark mr-auto" (click)="modal.close('Close')">Close</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click'); saveFilter()">Save</button>
   </div>
 </ng-template>
 
-<button class="btn btn-lg btn-outline-primary" (click)="open(content, filters.id)">{{ filters.filterName }}</button>
+<button *ngIf="!newFilter && (filters !== undefined && filters !== null)" class="btn btn-lg btn-outline-primary" (click)="open(content)">{{ filters.filterName }}</button>
+<button *ngIf="newFilter" class="btn btn-lg btn-outline-primary" (click)="open(content)">Add Filter</button>

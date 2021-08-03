@@ -11,6 +11,7 @@ import {Title} from '@angular/platform-browser';
 })
 export class ModalComponent implements OnInit {
   @Input() filters;
+  @Input() newFilter;
   amounts: Amount[] = [];
   titles: Title[] = [];
   dates: Date[] = [];
@@ -28,9 +29,12 @@ export class ModalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.filters !== null && this.filters !== undefined) {
+      this.newAttribute.filterName = this.filters.filterName;
+    }
   }
 
-  open(content, id): void {
+  open(content): void {
     this.modalService.open(content, { size: 'xl' });
   }
 
@@ -51,6 +55,7 @@ export class ModalComponent implements OnInit {
       this.dates.push(this.newAttribute);
     }
     this.newAttribute = {};
+    this.newAttribute.filterName = this.filters.filterName;
   }
 
   // TODO update with API call
@@ -79,9 +84,19 @@ export class ModalComponent implements OnInit {
   }
 
   saveFilter(): void {
+    if (this.newFilter) {
+      const newFilterJson = {
+        filterName: this.newAttribute.filterName
+      };
+      this.filterService.postFilter(newFilterJson).subscribe(newFilterName => {
+        this.filters = newFilterName;
+      });
+    }
+
     this.saveAmount();
     this.saveTitle();
     this.saveDate();
+
   }
 
   saveAmount(): void {
