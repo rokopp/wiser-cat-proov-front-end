@@ -16,10 +16,10 @@
       </div>
       <div class="form-group row">
         <h2 class="col-sm-2 col-form-label">Criteria</h2>
-        <table>
+        <table style="width: 80%">
           <tbody>
           <tr *ngFor="let field of filters?.amounts; let i = index">
-            <td>
+            <td class="col-4">
               <select class="form-control">
                 <option *ngFor="let type of filterTypes"
                         [ngValue]="type"
@@ -29,7 +29,7 @@
                 </option>
               </select>
             </td>
-            <td>
+            <td class="col-4">
               <select class="form-control">
                 <option *ngFor="let type of amountCriteriaType"
                         [ngValue]="type"
@@ -39,16 +39,16 @@
                 </option>
               </select>
             </td>
-            <td>
+            <td class="col-4">
               <input class="form-control" type="number" id="newAttributeNumber" [(ngModel)]="field.number" name="newAttributeNumber" />
             </td>
-            <td>
+            <td class="col-4">
               <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'amount')">Delete</button>
             </td>
           </tr>
 
           <tr *ngFor="let field of filters?.titles; let i = index">
-            <td>
+            <td class="col-4">
               <select class="form-control">
                 <option *ngFor="let type of filterTypes"
                         [ngValue]="type"
@@ -58,7 +58,7 @@
                 </option>
               </select>
             </td>
-            <td>
+            <td class="col-4">
               <select class="form-control">
                 <option *ngFor="let type of titleCriteriaType"
                         [ngValue]="type"
@@ -68,15 +68,16 @@
                 </option>
               </select>
             </td>
-            <td>
+            <td class="col-4">
               <input class="form-control" type="text" id="titleTextUpdate" [(ngModel)]="field.text" name="titleTextUpdate" />
             </td>
-            <td>
+            <td class="col-4">
               <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'title')">Delete</button>
             </td>
           </tr>
+
           <tr *ngFor="let field of filters?.dates; let i = index">
-            <td>
+            <td class="col-4">
               <select class="form-control">
                 <option *ngFor="let type of filterTypes"
                         [ngValue]="type"
@@ -86,7 +87,7 @@
                 </option>
               </select>
             </td>
-            <td>
+            <td class="col-4">
               <select class="form-control">
                 <option *ngFor="let type of dateCriteriaType"
                         [ngValue]="type"
@@ -96,29 +97,33 @@
                 </option>
               </select>
             </td>
-            <td>
+            <td class="col-4">
               <input class="form-control" type="date" id="dateUpdate" [(ngModel)]="field.date" name="dateUpdate" />
             </td>
-            <td>
+            <td class="col-4">
               <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'date')">Delete</button>
             </td>
           </tr>
+
           <tr>
-            <td>
+            <td class="col-4">
               <select [(ngModel)]="newAttribute.type" name="selectType" id='selectType' class="form-control" (change)="getSelectedCriteria()">
-                <option *ngFor="let type of filterTypes" [ngValue]="type">
+                <option *ngFor="let type of filterTypes"
+                        [ngValue]="type"
+                        [selected]="type === 'Amount'"
+                >
                   {{type}}
                 </option>
               </select>
             </td>
-            <td>
+            <td class="col-4">
               <select [(ngModel)]="newAttribute.compareCondition" name="selectCriteria" id='selectCriteria' class="form-control">
                 <option *ngFor="let criteria of selectCriteriaType" [ngValue]="criteria">
                   {{criteria}}
                 </option>
               </select>
             </td>
-            <td>
+            <td class="col-4">
               <input *ngIf="newAttribute.type === 'Amount'" class="form-control" type="number" id="saveNumber" [(ngModel)]="newAttribute.number" name="saveNumber" />
               <input *ngIf="newAttribute.type === 'Title'" class="form-control" type="text" id="saveTitle" [(ngModel)]="newAttribute.text" name="saveTitle" />
               <input *ngIf="newAttribute.type === 'Date'" class="form-control" type="date" id="saveDate" [(ngModel)]="newAttribute.date" name="saveDate" />
@@ -126,9 +131,14 @@
 
           </tr>
           <tr>
-            <td>
+            <td class="col-4">
               <button class="btn btn-default" type="button" (click)="addFieldValue(newAttribute.type)">Add</button>
             </td>
+          </tr>
+          <tr>
+              <td class="col-auto" *ngFor="let name of numberOfCriterias">
+                <input type="checkbox" [name]="name" (change)="onChange($event)" [disabled]="isChecked && (isCheckedName!=name)"> {{'Select ' + name}}
+              </td>
           </tr>
           </tbody>
         </table>

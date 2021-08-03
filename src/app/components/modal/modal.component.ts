@@ -20,6 +20,12 @@ export class ModalComponent implements OnInit {
   deleteTitles = [];
   deleteDates = [];
 
+  isChecked;
+  isCheckedName;
+  checkboxData = [1,2,3,4,5,6,7,8];
+  numberOfCriterias;
+
+
   filterTypes = ['Amount', 'Title', 'Date'];
   selectCriteriaType = [];
   amountCriteriaType = ['More', 'Less', 'Equal'];
@@ -32,10 +38,16 @@ export class ModalComponent implements OnInit {
               private filterService: FilterService
   ) { }
 
+  onChange(e): void{
+    this.isChecked = !this.isChecked;
+    this.isCheckedName = e.target.name;
+  }
+
   ngOnInit(): void {
     if (this.filters !== null && this.filters !== undefined) {
       this.newAttribute.filterName = this.filters.filterName;
     }
+    this.createSelectListForCriterias();
   }
 
   open(content): void {
@@ -103,6 +115,7 @@ export class ModalComponent implements OnInit {
     this.deleteAmount();
     this.deleteTitle();
     this.deleteDate();
+    window.location.reload();
   }
 
   saveAmount(): void {
@@ -174,5 +187,20 @@ export class ModalComponent implements OnInit {
         });
       });
     }
+  }
+
+  createSelectListForCriterias(): void {
+    let listLen = 0;
+    if (this.filters.amounts !== null) {
+      listLen += this.filters.amounts.length;
+    }
+    if (this.filters.titles != null) {
+      listLen += this.filters.titles.length;
+    }
+    if (this.filters.dates != null) {
+      listLen += this.filters.dates.length;
+    }
+    this.numberOfCriterias = Array.from({length: listLen}, (_, i) => i + 1);
+
   }
 }
