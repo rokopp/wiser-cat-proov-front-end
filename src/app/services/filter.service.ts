@@ -61,4 +61,20 @@ export class FilterService {
   postDate(dateObj): Observable<Date> {
     return this.http.post<Date>(this.dateUrl, dateObj, {});
   }
+
+  deleteFilter(id: number): Observable<Filter>{
+    return this.http.delete<Filter>(this.filterUrl + '/' + id);
+  }
+
+  deleteAmount(id: number): Observable<Amount>{
+    return this.http.delete<Amount>(this.amountUrl + '/' + id);
+  }
+
+  deleteDate(id: number): Observable<Date>{
+    return this.http.delete<Date>(this.dateUrl + '/' + id);
+  }
+
+  deleteTitle(id: number): Observable<Title>{
+    return this.http.delete<Title>(this.titleUrl + '/' + id);
+  }
 }

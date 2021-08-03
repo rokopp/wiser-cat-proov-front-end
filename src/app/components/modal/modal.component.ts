@@ -15,6 +15,10 @@ export class ModalComponent implements OnInit {
   amounts: Amount[] = [];
   titles: Title[] = [];
   dates: Date[] = [];
+  showRow = false;
+  deleteAmounts = [];
+  deleteTitles = [];
+  deleteDates = [];
 
   filterTypes = ['Amount', 'Title', 'Date'];
   selectCriteriaType = [];
@@ -61,13 +65,13 @@ export class ModalComponent implements OnInit {
   // TODO update with API call
   deleteFieldValue(index, type): void {
     if (type === 'amount') {
-      this.filters.amounts.splice(index, 1);
+      this.deleteAmounts.push(this.filters.amounts.splice(index, 1));
     }
     if (type === 'title') {
-      this.filters.titles.splice(index, 1);
+      this.deleteAmounts.push(this.filters.titles.splice(index, 1));
     }
     if (type === 'date') {
-      this.filters.dates.splice(index, 1);
+      this.deleteAmounts.push(this.filters.dates.splice(index, 1));
     }
   }
 
@@ -96,7 +100,9 @@ export class ModalComponent implements OnInit {
     this.saveAmount();
     this.saveTitle();
     this.saveDate();
-
+    this.deleteAmount();
+    this.deleteTitle();
+    this.deleteDate();
   }
 
   saveAmount(): void {
@@ -129,6 +135,44 @@ export class ModalComponent implements OnInit {
         });
       });
       this.dates = [];
+    }
+  }
+
+  deleteFilter(id): void {
+    this.filterService.deleteFilter(id).subscribe(deleted => {
+      console.log(deleted);
+      window.location.reload();
+    });
+  }
+
+  deleteAmount(): void {
+    if (this.deleteAmounts.length !== 0) {
+      this.deleteAmounts.forEach(deleted => {
+        console.log(deleted[0]);
+        this.filterService.deleteAmount(deleted[0].id).subscribe(delAmount => {
+          console.log(delAmount);
+        });
+      });
+    }
+  }
+
+  deleteTitle(): void {
+    if (this.deleteTitles.length !== 0) {
+      this.deleteTitles.forEach(deleted => {
+        this.filterService.deleteTitle(deleted[0].id).subscribe(delTitle => {
+          console.log(delTitle);
+        });
+      });
+    }
+  }
+
+  deleteDate(): void {
+    if (this.deleteDates.length !== 0) {
+      this.deleteDates.forEach(deleted => {
+        this.filterService.deleteDate(deleted[0].id).subscribe(delDate => {
+          console.log(delDate);
+        });
+      });
     }
   }
 }

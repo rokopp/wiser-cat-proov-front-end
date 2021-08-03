@@ -123,6 +123,9 @@
               <input *ngIf="newAttribute.type === 'Title'" class="form-control" type="text" id="saveTitle" [(ngModel)]="newAttribute.text" name="saveTitle" />
               <input *ngIf="newAttribute.type === 'Date'" class="form-control" type="date" id="saveDate" [(ngModel)]="newAttribute.date" name="saveDate" />
             </td>
+
+          </tr>
+          <tr>
             <td>
               <button class="btn btn-default" type="button" (click)="addFieldValue(newAttribute.type)">Add</button>
             </td>
@@ -139,4 +142,5 @@
 </ng-template>
 
 <button *ngIf="!newFilter && (filters !== undefined && filters !== null)" class="btn btn-lg btn-outline-primary" (click)="open(content)">{{ filters.filterName }}</button>
+<button *ngIf="!newFilter && (filters !== undefined && filters !== null)" class="btn btn-lg btn-outline-danger" (click)="deleteFilter(filters.id)">Delete Filter</button>
 <button *ngIf="newFilter" class="btn btn-lg btn-outline-primary" (click)="open(content)">Add Filter</button>
