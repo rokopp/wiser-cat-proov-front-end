@@ -99,7 +99,6 @@ export class ModalComponent implements OnInit {
 
   saveFilter(): void {
     if (this.newFilter) {
-      console.log('mina');
       const newFilterJson = {
         filterName: this.newAttribute.filterName
       };

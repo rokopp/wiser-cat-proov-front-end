@@ -10,8 +10,8 @@
       <div class="form-group row">
         <label for="filterName" class="col-sm-2 col-form-label">Filter name</label>
         <div class="col-sm-10">
-          <input *ngIf="!newFilter" id="filterName" class="form-control" name="updateFilterName" [value]="filters.filterName">
-          <input *ngIf="newFilter" id="newfilterName2" class="form-control" name="newFilterName2" [value]="filters?.filterName">
+          <input *ngIf="!newFilter" id="filterName" class="form-control" name="updateFilterName" [(ngModel)]="filters.filterName">
+          <input *ngIf="newFilter && filters" id="newfilterName2" class="form-control" name="newFilterName2" [(ngModel)]="filters.filterName">
         </div>
       </div>
       <div class="form-group row">
