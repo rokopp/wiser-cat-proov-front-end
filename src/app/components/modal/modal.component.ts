@@ -22,7 +22,6 @@ export class ModalComponent implements OnInit {
 
   isChecked;
   isCheckedName;
-  checkboxData = [1,2,3,4,5,6,7,8];
   numberOfCriterias;
 
 
@@ -71,19 +70,17 @@ export class ModalComponent implements OnInit {
       this.dates.push(this.newAttribute);
     }
     this.newAttribute = {};
-    this.newAttribute.filterName = this.filters.filterName;
   }
 
-  // TODO update with API call
   deleteFieldValue(index, type): void {
     if (type === 'amount') {
       this.deleteAmounts.push(this.filters.amounts.splice(index, 1));
     }
     if (type === 'title') {
-      this.deleteAmounts.push(this.filters.titles.splice(index, 1));
+      this.deleteTitles.push(this.filters.titles.splice(index, 1));
     }
     if (type === 'date') {
-      this.deleteAmounts.push(this.filters.dates.splice(index, 1));
+      this.deleteDates.push(this.filters.dates.splice(index, 1));
     }
   }
 
@@ -115,15 +112,13 @@ export class ModalComponent implements OnInit {
     this.deleteAmount();
     this.deleteTitle();
     this.deleteDate();
-    window.location.reload();
+    // window.location.reload();
   }
 
   saveAmount(): void {
     if (this.amounts.length !== 0) {
       this.amounts.forEach(saveAmounts => {
-        this.filterService.postAmount(saveAmounts).subscribe(amount => {
-          console.log(amount);
-        });
+        this.filterService.postAmount(saveAmounts).subscribe(() => {});
       });
       this.amounts = [];
     }
@@ -132,9 +127,7 @@ export class ModalComponent implements OnInit {
   saveTitle(): void {
     if (this.titles.length !== 0) {
       this.titles.forEach(saveTitles => {
-        this.filterService.postTitle(saveTitles).subscribe(title => {
-          console.log(title);
-        });
+        this.filterService.postTitle(saveTitles).subscribe(() => {});
       });
       this.titles = [];
     }
@@ -143,17 +136,14 @@ export class ModalComponent implements OnInit {
   saveDate(): void {
     if (this.dates.length !== 0) {
       this.dates.forEach(saveDates => {
-        this.filterService.postDate(saveDates).subscribe(date => {
-          console.log(date);
-        });
+        this.filterService.postDate(saveDates).subscribe(() => {});
       });
       this.dates = [];
     }
   }
 
   deleteFilter(id): void {
-    this.filterService.deleteFilter(id).subscribe(deleted => {
-      console.log(deleted);
+    this.filterService.deleteFilter(id).subscribe(() => {
       window.location.reload();
     });
   }
@@ -161,10 +151,7 @@ export class ModalComponent implements OnInit {
   deleteAmount(): void {
     if (this.deleteAmounts.length !== 0) {
       this.deleteAmounts.forEach(deleted => {
-        console.log(deleted[0]);
-        this.filterService.deleteAmount(deleted[0].id).subscribe(delAmount => {
-          console.log(delAmount);
-        });
+        this.filterService.deleteAmount(deleted[0].id).subscribe(() => {});
       });
     }
   }
@@ -172,9 +159,7 @@ export class ModalComponent implements OnInit {
   deleteTitle(): void {
     if (this.deleteTitles.length !== 0) {
       this.deleteTitles.forEach(deleted => {
-        this.filterService.deleteTitle(deleted[0].id).subscribe(delTitle => {
-          console.log(delTitle);
-        });
+        this.filterService.deleteTitle(deleted[0].id).subscribe(() => {});
       });
     }
   }
@@ -182,14 +167,13 @@ export class ModalComponent implements OnInit {
   deleteDate(): void {
     if (this.deleteDates.length !== 0) {
       this.deleteDates.forEach(deleted => {
-        this.filterService.deleteDate(deleted[0].id).subscribe(delDate => {
-          console.log(delDate);
-        });
+        this.filterService.deleteDate(deleted[0].id).subscribe(() => {});
       });
     }
   }
 
   createSelectListForCriterias(): void {
+    this.numberOfCriterias = [];
     let listLen = 0;
     if (this.filters.amounts !== null) {
       listLen += this.filters.amounts.length;
@@ -201,6 +185,13 @@ export class ModalComponent implements OnInit {
       listLen += this.filters.dates.length;
     }
     this.numberOfCriterias = Array.from({length: listLen}, (_, i) => i + 1);
+  }
 
+  checkIfNewFilterIsCloseEditing(): void {
+    if (this.newFilter) {
+      this.filterService.deleteFilter(this.filters.id).subscribe(() => {
+        window.location.reload();
+      });
+    }
   }
 }

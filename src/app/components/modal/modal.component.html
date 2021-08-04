@@ -1,7 +1,7 @@
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Filter update</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(); checkIfNewFilterIsCloseEditing()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -10,8 +10,8 @@
       <div class="form-group row">
         <label for="filterName" class="col-sm-2 col-form-label">Filter name</label>
         <div class="col-sm-10">
-          <input *ngIf="!newFilter" id="filterName" class="form-control" name="updateFilterName" [(ngModel)]="newAttribute.filterName">
-          <input *ngIf="newFilter" id="newfilterName" class="form-control" name="newFilterName" [(ngModel)]="newAttribute.filterName">
+          <input *ngIf="!newFilter" id="filterName" class="form-control" name="updateFilterName" [value]="filters.filterName">
+          <input *ngIf="newFilter" id="newfilterName2" class="form-control" name="newFilterName2" [value]="filters.filterName">
         </div>
       </div>
       <div class="form-group row">
@@ -40,7 +40,7 @@
               </select>
             </td>
             <td class="col-4">
-              <input class="form-control" type="number" id="newAttributeNumber" [(ngModel)]="field.number" name="newAttributeNumber" />
+              <input class="form-control" type="number" id="newAttributeNumber" [value]="field.number" name="newAttributeNumber" />
             </td>
             <td class="col-4">
               <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'amount')">Delete</button>
@@ -69,7 +69,7 @@
               </select>
             </td>
             <td class="col-4">
-              <input class="form-control" type="text" id="titleTextUpdate" [(ngModel)]="field.text" name="titleTextUpdate" />
+              <input class="form-control" type="text" id="titleTextUpdate" [value]="field.text" name="titleTextUpdate" />
             </td>
             <td class="col-4">
               <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'title')">Delete</button>
@@ -98,7 +98,7 @@
               </select>
             </td>
             <td class="col-4">
-              <input class="form-control" type="date" id="dateUpdate" [(ngModel)]="field.date" name="dateUpdate" />
+              <input class="form-control" type="date" id="dateUpdate" [value]="field.date" name="dateUpdate" />
             </td>
             <td class="col-4">
               <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'date')">Delete</button>
@@ -128,12 +128,12 @@
               <input *ngIf="newAttribute.type === 'Title'" class="form-control" type="text" id="saveTitle" [(ngModel)]="newAttribute.text" name="saveTitle" />
               <input *ngIf="newAttribute.type === 'Date'" class="form-control" type="date" id="saveDate" [(ngModel)]="newAttribute.date" name="saveDate" />
             </td>
-
+            <td class="col-4">
+              <button class="btn btn-default" type="button" (click)="addFieldValue(newAttribute.type); createSelectListForCriterias()">Add</button>
+            </td>
           </tr>
           <tr>
-            <td class="col-4">
-              <button class="btn btn-default" type="button" (click)="addFieldValue(newAttribute.type)">Add</button>
-            </td>
+
           </tr>
           <tr>
               <td class="col-auto" *ngFor="let name of numberOfCriterias">
@@ -146,11 +146,31 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark mr-auto" (click)="modal.close('Close')">Close</button>
+    <button type="button" class="btn btn-outline-dark mr-auto" (click)="modal.close('Close'); checkIfNewFilterIsCloseEditing()">Close</button>
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click'); saveFilter()">Save</button>
+  </div>
+</ng-template>
+<ng-template #newFilterNaming let-modal2>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modalNewFilterName">New Filters name</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal2.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group row">
+      <label for="filterName" class="col-sm-2 col-form-label">Filter name</label>
+      <div class="col-sm-10">
+        <input *ngIf="newFilter" id="newfilterName" class="form-control" name="newFilterName" [(ngModel)]="newAttribute.filterName">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark mr-auto" (click)="modal2.close('Close')">Close</button>
+    <button type="button" class="btn btn-outline-dark" (click)="saveFilter(); modal2.close('Save click'); open(content)">Next</button>
   </div>
 </ng-template>
 
 <button *ngIf="!newFilter && (filters !== undefined && filters !== null)" class="btn btn-lg btn-outline-primary" (click)="open(content)">{{ filters.filterName }}</button>
 <button *ngIf="!newFilter && (filters !== undefined && filters !== null)" class="btn btn-lg btn-outline-danger ml-auto" (click)="deleteFilter(filters.id)">X</button>
-<button *ngIf="newFilter" class="btn btn-lg btn-outline-primary" (click)="open(content)">Add Filter</button>
+<button *ngIf="newFilter" class="btn btn-lg btn-outline-primary" (click)="open(newFilterNaming)">Add Filter</button>
