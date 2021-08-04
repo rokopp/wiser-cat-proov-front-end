@@ -11,7 +11,7 @@
         <label for="filterName" class="col-sm-2 col-form-label">Filter name</label>
         <div class="col-sm-10">
           <input *ngIf="!newFilter" id="filterName" class="form-control" name="updateFilterName" [value]="filters.filterName">
-          <input *ngIf="newFilter" id="newfilterName2" class="form-control" name="newFilterName2" [value]="filters.filterName">
+          <input *ngIf="newFilter" id="newfilterName2" class="form-control" name="newFilterName2" [value]="filters?.filterName">
         </div>
       </div>
       <div class="form-group row">
@@ -135,10 +135,15 @@
           <tr>
 
           </tr>
-          <tr>
-              <td class="col-auto" *ngFor="let name of numberOfCriterias">
-                <input type="checkbox" [name]="name" (change)="onChange($event)" [disabled]="isChecked && (isCheckedName!=name)"> {{'Select ' + name}}
-              </td>
+          <tr *ngIf="newFilter">
+            <td class="col-auto" *ngFor="let name of numberOfCriterias">
+              <input type="checkbox" [name]="name" (change)="onChange($event)" [disabled]="isChecked && (isCheckedName!=name)" [checked]="name === filters.selectedFilter"> {{'Select ' + name}}
+            </td>
+          </tr>
+          <tr *ngIf="!newFilter">
+            <td class="col-auto" *ngFor="let name of numberOfCriterias">
+              <input type="checkbox" [name]="name" (change)="onChange($event)" [disabled]="name != filters.selectedFilter && isCheckedName != name && !isChecked" [checked]="name === filters.selectedFilter"> {{'Select ' + name}}
+            </td>
           </tr>
           </tbody>
         </table>

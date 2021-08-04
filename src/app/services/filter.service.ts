@@ -30,8 +30,9 @@ export class FilterService {
   getFilterIdByName(name: string): Observable<number> {
     return this.http.get<number>(this.filterUrl + '/name/' + name);
   }
-  removeFilter(id: number): Observable<Filter>{
-    return this.http.delete<Filter>(this.filterUrl + '/' + id);
+
+  updateFilter(filterObj): Observable<Filter> {
+    return this.http.put<Filter>(this.filterUrl, filterObj);
   }
 
   postFilter(filterObj): Observable<Filter> {
@@ -46,6 +47,10 @@ export class FilterService {
     return this.http.post<Amount>(this.amountUrl, amountObj, {});
   }
 
+  updateAmount(amountObj): Observable<Amount> {
+    return this.http.put<Amount>(this.amountUrl, amountObj);
+  }
+
   getTitleByFilterId(id: number): Observable<Title[]>{
     return this.http.get<Title[]>(this.titleUrl + '/filters/' + id);
   }
@@ -54,12 +59,20 @@ export class FilterService {
     return this.http.post<Title>(this.titleUrl, titleObj, {});
   }
 
+  updateTitle(titleObj): Observable<Title> {
+    return this.http.put<Title>(this.titleUrl, titleObj);
+  }
+
   getDateByFilterId(id: number): Observable<Date[]>{
     return this.http.get<Date[]>(this.dateUrl + '/filters/' + id);
   }
 
   postDate(dateObj): Observable<Date> {
     return this.http.post<Date>(this.dateUrl, dateObj, {});
+  }
+
+  updateDate(dateObj): Observable<Date> {
+    return this.http.put<Date>(this.dateUrl, dateObj);
   }
 
   deleteFilter(id: number): Observable<Filter>{

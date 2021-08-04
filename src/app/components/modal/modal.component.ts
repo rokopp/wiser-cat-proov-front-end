@@ -15,7 +15,6 @@ export class ModalComponent implements OnInit {
   amounts: Amount[] = [];
   titles: Title[] = [];
   dates: Date[] = [];
-  showRow = false;
   deleteAmounts = [];
   deleteTitles = [];
   deleteDates = [];
@@ -37,9 +36,11 @@ export class ModalComponent implements OnInit {
               private filterService: FilterService
   ) { }
 
-  onChange(e): void{
+  onChange(e): void {
     this.isChecked = !this.isChecked;
     this.isCheckedName = e.target.name;
+    this.newAttribute.selectedFilter = this.isCheckedName;
+    this.filters.selectedFilter = 0;
   }
 
   ngOnInit(): void {
@@ -98,6 +99,7 @@ export class ModalComponent implements OnInit {
 
   saveFilter(): void {
     if (this.newFilter) {
+      console.log('mina');
       const newFilterJson = {
         filterName: this.newAttribute.filterName
       };
@@ -112,6 +114,7 @@ export class ModalComponent implements OnInit {
     this.deleteAmount();
     this.deleteTitle();
     this.deleteDate();
+    this.updateFilter();
     // window.location.reload();
   }
 
@@ -139,6 +142,18 @@ export class ModalComponent implements OnInit {
         this.filterService.postDate(saveDates).subscribe(() => {});
       });
       this.dates = [];
+    }
+  }
+
+  updateFilter(): void {
+    if (this.filters != null) {
+      const upFilter = {
+        id: this.filters.id,
+        filterName: this.filters.filterName,
+        selectedFilter: this.isCheckedName
+      };
+      this.filterService.updateFilter(upFilter).subscribe(() => {
+      });
     }
   }
 
@@ -175,14 +190,14 @@ export class ModalComponent implements OnInit {
   createSelectListForCriterias(): void {
     this.numberOfCriterias = [];
     let listLen = 0;
-    if (this.filters.amounts !== null) {
-      listLen += this.filters.amounts.length;
+    if (this.filters?.amounts !== null) {
+      listLen += this.filters?.amounts.length;
     }
-    if (this.filters.titles != null) {
-      listLen += this.filters.titles.length;
+    if (this.filters?.titles != null) {
+      listLen += this.filters?.titles.length;
     }
-    if (this.filters.dates != null) {
-      listLen += this.filters.dates.length;
+    if (this.filters?.dates != null) {
+      listLen += this.filters?.dates.length;
     }
     this.numberOfCriterias = Array.from({length: listLen}, (_, i) => i + 1);
   }
