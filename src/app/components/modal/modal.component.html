@@ -30,7 +30,7 @@
               </select>
             </td>
             <td class="col-4">
-              <select class="form-control">
+              <select [(ngModel)]="field.compareCondition" name="amountsCompareCondition" class="form-control">
                 <option *ngFor="let type of amountCriteriaType"
                         [ngValue]="type"
                         [selected]="type === field.compareCondition"
@@ -40,7 +40,7 @@
               </select>
             </td>
             <td class="col-4">
-              <input class="form-control" type="number" id="newAttributeNumber" [value]="field.number" name="newAttributeNumber" />
+              <input class="form-control" type="number" id="newAttributeNumber" [(ngModel)]="field.number" name="newAttributeNumber" />
             </td>
             <td class="col-4">
               <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'amount')">Delete</button>
@@ -59,7 +59,7 @@
               </select>
             </td>
             <td class="col-4">
-              <select class="form-control">
+              <select [(ngModel)]="field.compareCondition" name="titleCompareCondition"  class="form-control">
                 <option *ngFor="let type of titleCriteriaType"
                         [ngValue]="type"
                         [selected]="type === field.compareCondition"
@@ -69,7 +69,7 @@
               </select>
             </td>
             <td class="col-4">
-              <input class="form-control" type="text" id="titleTextUpdate" [value]="field.text" name="titleTextUpdate" />
+              <input class="form-control" type="text" id="titleTextUpdate" [(ngModel)]="field.text" name="titleTextUpdate" />
             </td>
             <td class="col-4">
               <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'title')">Delete</button>
@@ -88,7 +88,7 @@
               </select>
             </td>
             <td class="col-4">
-              <select class="form-control">
+              <select [(ngModel)]="field.compareCondition" name="datesCompareCondition"  class="form-control">
                 <option *ngFor="let type of dateCriteriaType"
                         [ngValue]="type"
                         [selected]="type === field.compareCondition"
@@ -98,7 +98,7 @@
               </select>
             </td>
             <td class="col-4">
-              <input class="form-control" type="date" id="dateUpdate" [value]="field.date" name="dateUpdate" />
+              <input class="form-control" type="date" id="dateUpdate" [(ngModel)]="field.date" name="dateUpdate" />
             </td>
             <td class="col-4">
               <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'date')">Delete</button>

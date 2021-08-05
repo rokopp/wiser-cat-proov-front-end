@@ -114,6 +114,9 @@ export class ModalComponent implements OnInit {
     this.deleteTitle();
     this.deleteDate();
     this.updateFilter();
+    this.updateAmount();
+    this.updateTitle();
+    this.updateDate();
     // window.location.reload();
   }
 
@@ -152,6 +155,47 @@ export class ModalComponent implements OnInit {
         selectedFilter: this.isCheckedName
       };
       this.filterService.updateFilter(upFilter).subscribe(() => {
+      });
+    }
+  }
+
+  updateAmount(): void {
+    if (this.filters.amounts != null) {
+      this.filters.amounts.forEach(update => {
+        const upAmount = {
+          id: update.id,
+          compareCondition: update.compareCondition,
+          number: update.number
+        };
+        this.filterService.updateAmount(upAmount).subscribe(() => {});
+      });
+    }
+  }
+
+  updateTitle(): void {
+    if (this.filters.titles != null) {
+      this.filters.titles.forEach(update => {
+        const upTitle = {
+          id: update.id,
+          compareCondition: update.compareCondition,
+          text: update.text
+        };
+        this.filterService.updateTitle(upTitle).subscribe(() => {
+        });
+      });
+    }
+  }
+
+  updateDate(): void {
+    if (this.filters.dates != null) {
+      this.filters.dates.forEach(update => {
+        const upDate = {
+          id: update.id,
+          compareCondition: update.compareCondition,
+          date: update.date
+        };
+        this.filterService.updateDate(upDate).subscribe(() => {
+        });
       });
     }
   }
