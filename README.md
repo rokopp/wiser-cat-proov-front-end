@@ -1,27 +1,18 @@
-# WiserCatProovFrontEnd
+Hetkel töötavad:
+* Filtri kustutamine ja lisamine
+* Filtrile nime andmine koos kriteeriumite lisamine
+* 3 tüüpi kriteeriumi Amount, Title ja Date
+* Igale tüübile on vastav kriteeriumi
+* Amount More, Less ja Equal
+* Title Starts with ja Ends With
+* Date From ja Before
+* Selectionid saab valida ainult ühe
+* Filtreid saab hiljem muuta
+* Muuta saab nime Iga tüübi enda parameetreid nagu Amounti puhul muudad Less ==> Equal
+* Saab muuta selectionit
+* Kui tabeli ridade arv suureneb, siis tekib scrollbar
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.1.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Puudu olevad osad:
+* Kasutaja saaks ise muuta Modali kõrgust
+* Valideerimine, kui lisatakse tühi väli või filtris peab olema vähemalt üks kriteerium
+* Uus lisatud filter oleks Default Amount 
