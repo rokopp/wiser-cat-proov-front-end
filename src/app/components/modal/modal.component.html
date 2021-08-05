@@ -16,97 +16,14 @@
       </div>
       <div class="form-group row">
         <h2 class="col-sm-2 col-form-label">Criteria</h2>
-        <table style="width: 80%">
+        <table class="table table-fixed">
           <tbody>
-          <tr *ngFor="let field of filters?.amounts; let i = index">
-            <td class="col-4">
-              <select class="form-control">
-                <option *ngFor="let type of filterTypes"
-                        [ngValue]="type"
-                        [selected]="type === field.type"
-                >
-                  {{type}}
-                </option>
-              </select>
-            </td>
-            <td class="col-4">
-              <select [(ngModel)]="field.compareCondition" name="amountsCompareCondition" class="form-control">
-                <option *ngFor="let type of amountCriteriaType"
-                        [ngValue]="type"
-                        [selected]="type === field.compareCondition"
-                >
-                  {{type}}
-                </option>
-              </select>
-            </td>
-            <td class="col-4">
-              <input class="form-control" type="number" id="newAttributeNumber" [(ngModel)]="field.number" name="newAttributeNumber" />
-            </td>
-            <td class="col-4">
-              <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'amount')">Delete</button>
-            </td>
-          </tr>
-
-          <tr *ngFor="let field of filters?.titles; let i = index">
-            <td class="col-4">
-              <select class="form-control">
-                <option *ngFor="let type of filterTypes"
-                        [ngValue]="type"
-                        [selected]="type === field.type"
-                >
-                  {{type}}
-                </option>
-              </select>
-            </td>
-            <td class="col-4">
-              <select [(ngModel)]="field.compareCondition" name="titleCompareCondition"  class="form-control">
-                <option *ngFor="let type of titleCriteriaType"
-                        [ngValue]="type"
-                        [selected]="type === field.compareCondition"
-                >
-                  {{type}}
-                </option>
-              </select>
-            </td>
-            <td class="col-4">
-              <input class="form-control" type="text" id="titleTextUpdate" [(ngModel)]="field.text" name="titleTextUpdate" />
-            </td>
-            <td class="col-4">
-              <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'title')">Delete</button>
-            </td>
-          </tr>
-
-          <tr *ngFor="let field of filters?.dates; let i = index">
-            <td class="col-4">
-              <select class="form-control">
-                <option *ngFor="let type of filterTypes"
-                        [ngValue]="type"
-                        [selected]="type === field.type"
-                >
-                  {{type}}
-                </option>
-              </select>
-            </td>
-            <td class="col-4">
-              <select [(ngModel)]="field.compareCondition" name="datesCompareCondition"  class="form-control">
-                <option *ngFor="let type of dateCriteriaType"
-                        [ngValue]="type"
-                        [selected]="type === field.compareCondition"
-                >
-                  {{type}}
-                </option>
-              </select>
-            </td>
-            <td class="col-4">
-              <input class="form-control" type="date" id="dateUpdate" [(ngModel)]="field.date" name="dateUpdate" />
-            </td>
-            <td class="col-4">
-              <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, 'date')">Delete</button>
-            </td>
-          </tr>
+          <app-criteria [criteriaType]="'Amount'" [criteriaList]="filters?.amounts" [criteriaTypeList]="amountCriteriaType"></app-criteria>
+          <app-criteria [criteriaType]="'Title'" [criteriaList]="filters?.titles" [criteriaTypeList]="titleCriteriaType"></app-criteria>
+          <app-criteria [criteriaType]="'Date'" [criteriaList]="filters?.dates" [criteriaTypeList]="dateCriteriaType"></app-criteria>
 
           <tr>
-            <td class="col-4">
+            <td scope="row">
               <select [(ngModel)]="newAttribute.type" name="selectType" id='selectType' class="form-control" (change)="getSelectedCriteria()">
                 <option *ngFor="let type of filterTypes"
                         [ngValue]="type"
@@ -116,43 +33,44 @@
                 </option>
               </select>
             </td>
-            <td class="col-4">
+            <td scope="row">
               <select [(ngModel)]="newAttribute.compareCondition" name="selectCriteria" id='selectCriteria' class="form-control">
                 <option *ngFor="let criteria of selectCriteriaType" [ngValue]="criteria">
                   {{criteria}}
                 </option>
               </select>
             </td>
-            <td class="col-4">
+            <td scope="row">
               <input *ngIf="newAttribute.type === 'Amount'" class="form-control" type="number" id="saveNumber" [(ngModel)]="newAttribute.number" name="saveNumber" />
               <input *ngIf="newAttribute.type === 'Title'" class="form-control" type="text" id="saveTitle" [(ngModel)]="newAttribute.text" name="saveTitle" />
               <input *ngIf="newAttribute.type === 'Date'" class="form-control" type="date" id="saveDate" [(ngModel)]="newAttribute.date" name="saveDate" />
             </td>
-            <td class="col-4">
+            <td scope="row">
               <button class="btn btn-default" type="button" (click)="addFieldValue(newAttribute.type); createSelectListForCriterias()">Add</button>
             </td>
           </tr>
-          <tr>
 
-          </tr>
-          <tr *ngIf="newFilter">
-            <td class="col-auto" *ngFor="let name of numberOfCriterias">
-              <input type="checkbox" [name]="name" (change)="onChange($event)" [disabled]="isChecked && (isCheckedName!=name)" [checked]="name === filters.selectedFilter"> {{'Select ' + name}}
-            </td>
-          </tr>
-          <tr *ngIf="!newFilter">
-            <td class="col-auto" *ngFor="let name of numberOfCriterias">
-              <input type="checkbox" [name]="name" (change)="onChange($event)" [disabled]="name != filters.selectedFilter && isCheckedName != name && !isChecked" [checked]="name === filters.selectedFilter"> {{'Select ' + name}}
-            </td>
-          </tr>
           </tbody>
         </table>
+        <h2 class="col-sm-2 col-form-label">Selection</h2>
+        <div class="container">
+            <div class="row" *ngIf="newFilter">
+              <div class="col-auto" *ngFor="let name of numberOfCriterias">
+                <input type="checkbox" [name]="name" (change)="onChange($event)" [disabled]="isChecked && (isCheckedName!=name)"> {{'Select ' + name}}
+              </div>
+            </div>
+            <div class="row" *ngIf="!newFilter">
+              <div class="col-auto" *ngFor="let name of numberOfCriterias">
+                <input type="checkbox" [name]="name" (change)="onChange($event)" [disabled]="name != filters.selectedFilter && isCheckedName != name && !isChecked" [checked]="name === filters.selectedFilter"> {{'Select ' + name}}
+              </div>
+            </div>
+        </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark mr-auto" (click)="modal.close('Close'); checkIfNewFilterIsCloseEditing()">Close</button>
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click'); saveFilter()">Save</button>
+    <button type="button" class="btn btn-outline-danger mr-auto" (click)="modal.close('Close'); checkIfNewFilterIsCloseEditing()">Close</button>
+    <button type="button" class="btn btn-outline-success" (click)="modal.close('Save click'); saveFilter()">Save</button>
   </div>
 </ng-template>
 <ng-template #newFilterNaming let-modal2>
@@ -171,11 +89,11 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark mr-auto" (click)="modal2.close('Close')">Close</button>
-    <button type="button" class="btn btn-outline-dark" (click)="saveFilter(); modal2.close('Save click'); open(content)">Next</button>
+    <button type="button" class="btn btn-outline-danger mr-auto" (click)="modal2.close('Close')">Close</button>
+    <button type="button" class="btn btn-outline-success" (click)="saveFilter(); modal2.close('Next'); open(content)">Next</button>
   </div>
 </ng-template>
 
-<button *ngIf="!newFilter && (filters !== undefined && filters !== null)" class="btn btn-lg btn-outline-primary" (click)="open(content)">{{ filters.filterName }}</button>
-<button *ngIf="!newFilter && (filters !== undefined && filters !== null)" class="btn btn-lg btn-outline-danger ml-auto" (click)="deleteFilter(filters.id)">X</button>
-<button *ngIf="newFilter" class="btn btn-lg btn-outline-primary" (click)="open(newFilterNaming)">Add Filter</button>
+<button *ngIf="!newFilter && (filters !== undefined && filters !== null)" class="btn btn-lg btn-outline-primary float-left" (click)="open(content)">{{ filters.filterName }}</button>
+<button *ngIf="!newFilter && (filters !== undefined && filters !== null)" class="btn btn-lg btn-outline-danger float-right" (click)="deleteFilter(filters.id)">X</button>
+<button *ngIf="newFilter" class="btn btn-lg btn-outline-dark" (click)="open(newFilterNaming)">Add Filter</button>

@@ -2,11 +2,20 @@
   <table class="table w-50 mx-auto">
     <thead>
     <tr align="center">
-      <th class="mx-auto" scope="col">Filter Name</th>
+      <th scope="col">
+        <h3 class="float-left">
+          Filter Name
+        </h3>
+        <h4 class="float-right">
+          Action
+        </h4>
+      </th>
     </tr>
     </thead>
     <tr align="center" *ngFor="let filter of filters; index as i">
-      <app-modal [filters]="filter" [newFilter]="false"></app-modal>
+      <th>
+        <app-modal [filters]="filter" [newFilter]="false"></app-modal>
+      </th>
     </tr>
     <tr align="center">
       <th>

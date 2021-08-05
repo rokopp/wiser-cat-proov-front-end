@@ -3,6 +3,9 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FilterService} from '../../services/filter.service';
 import {Amount} from '../../interfaces/amount';
 import {Title} from '@angular/platform-browser';
+import {TitleService} from '../../services/title.service';
+import {AmountService} from '../../services/amount.service';
+import {DateService} from '../../services/date.service';
 
 @Component({
   selector: 'app-modal',
@@ -15,14 +18,10 @@ export class ModalComponent implements OnInit {
   amounts: Amount[] = [];
   titles: Title[] = [];
   dates: Date[] = [];
-  deleteAmounts = [];
-  deleteTitles = [];
-  deleteDates = [];
 
   isChecked;
   isCheckedName;
   numberOfCriterias;
-
 
   filterTypes = ['Amount', 'Title', 'Date'];
   selectCriteriaType = [];
@@ -33,7 +32,10 @@ export class ModalComponent implements OnInit {
   newAttribute: any = {};
 
   constructor(private modalService: NgbModal,
-              private filterService: FilterService
+              private filterService: FilterService,
+              private titleService: TitleService,
+              private amountService: AmountService,
+              private dateService: DateService
   ) { }
 
   onChange(e): void {
@@ -73,18 +75,6 @@ export class ModalComponent implements OnInit {
     this.newAttribute = {};
   }
 
-  deleteFieldValue(index, type): void {
-    if (type === 'amount') {
-      this.deleteAmounts.push(this.filters.amounts.splice(index, 1));
-    }
-    if (type === 'title') {
-      this.deleteTitles.push(this.filters.titles.splice(index, 1));
-    }
-    if (type === 'date') {
-      this.deleteDates.push(this.filters.dates.splice(index, 1));
-    }
-  }
-
   getSelectedCriteria(): void {
     if (this.newAttribute.type === 'Amount') {
       this.selectCriteriaType = this.amountCriteriaType;
@@ -110,9 +100,6 @@ export class ModalComponent implements OnInit {
     this.saveAmount();
     this.saveTitle();
     this.saveDate();
-    this.deleteAmount();
-    this.deleteTitle();
-    this.deleteDate();
     this.updateFilter();
     this.updateAmount();
     this.updateTitle();
@@ -123,7 +110,9 @@ export class ModalComponent implements OnInit {
   saveAmount(): void {
     if (this.amounts.length !== 0) {
       this.amounts.forEach(saveAmounts => {
-        this.filterService.postAmount(saveAmounts).subscribe(() => {});
+        this.amountService.postAmount(saveAmounts).subscribe((saved) => {
+          this.filters.amounts.push(saved);
+        });
       });
       this.amounts = [];
     }
@@ -132,7 +121,9 @@ export class ModalComponent implements OnInit {
   saveTitle(): void {
     if (this.titles.length !== 0) {
       this.titles.forEach(saveTitles => {
-        this.filterService.postTitle(saveTitles).subscribe(() => {});
+        this.titleService.postTitle(saveTitles).subscribe((saved) => {
+          this.filters.titles.push(saved);
+        });
       });
       this.titles = [];
     }
@@ -141,7 +132,9 @@ export class ModalComponent implements OnInit {
   saveDate(): void {
     if (this.dates.length !== 0) {
       this.dates.forEach(saveDates => {
-        this.filterService.postDate(saveDates).subscribe(() => {});
+        this.dateService.postDate(saveDates).subscribe((saved) => {
+          this.filters.dates.push(saved);
+        });
       });
       this.dates = [];
     }
@@ -160,43 +153,20 @@ export class ModalComponent implements OnInit {
   }
 
   updateAmount(): void {
-    if (this.filters.amounts != null) {
-      this.filters.amounts.forEach(update => {
-        const upAmount = {
-          id: update.id,
-          compareCondition: update.compareCondition,
-          number: update.number
-        };
-        this.filterService.updateAmount(upAmount).subscribe(() => {});
-      });
+    if (this.filters?.amounts != null) {
+      this.filterService.updateCriteria(this.filters?.amounts, 'Amount');
     }
   }
 
   updateTitle(): void {
-    if (this.filters.titles != null) {
-      this.filters.titles.forEach(update => {
-        const upTitle = {
-          id: update.id,
-          compareCondition: update.compareCondition,
-          text: update.text
-        };
-        this.filterService.updateTitle(upTitle).subscribe(() => {
-        });
-      });
+    if (this.filters?.titles != null) {
+      this.filterService.updateCriteria(this.filters?.titles, 'Title');
     }
   }
 
   updateDate(): void {
-    if (this.filters.dates != null) {
-      this.filters.dates.forEach(update => {
-        const upDate = {
-          id: update.id,
-          compareCondition: update.compareCondition,
-          date: update.date
-        };
-        this.filterService.updateDate(upDate).subscribe(() => {
-        });
-      });
+    if (this.filters?.dates != null) {
+      this.filterService.updateCriteria(this.filters?.dates, 'Date');
     }
   }
 
@@ -204,30 +174,6 @@ export class ModalComponent implements OnInit {
     this.filterService.deleteFilter(id).subscribe(() => {
       window.location.reload();
     });
-  }
-
-  deleteAmount(): void {
-    if (this.deleteAmounts.length !== 0) {
-      this.deleteAmounts.forEach(deleted => {
-        this.filterService.deleteAmount(deleted[0].id).subscribe(() => {});
-      });
-    }
-  }
-
-  deleteTitle(): void {
-    if (this.deleteTitles.length !== 0) {
-      this.deleteTitles.forEach(deleted => {
-        this.filterService.deleteTitle(deleted[0].id).subscribe(() => {});
-      });
-    }
-  }
-
-  deleteDate(): void {
-    if (this.deleteDates.length !== 0) {
-      this.deleteDates.forEach(deleted => {
-        this.filterService.deleteDate(deleted[0].id).subscribe(() => {});
-      });
-    }
   }
 
   createSelectListForCriterias(): void {

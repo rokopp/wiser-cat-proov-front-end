@@ -1,0 +1,30 @@
+<tr *ngFor="let field of criteriaList; let i = index">
+  <td scope="row">
+    <select class="form-control">
+      <option *ngFor="let type of filterTypes"
+              [ngValue]="type"
+              [selected]="type === field.type"
+      >
+        {{type}}
+      </option>
+    </select>
+  </td>
+  <td scope="row">
+    <select [(ngModel)]="field.compareCondition" name="amountsCompareCondition_ + {{i}}" class="form-control">
+      <option *ngFor="let type of criteriaTypeList"
+              [ngValue]="type"
+              [selected]="type === field.compareCondition"
+      >
+        {{type}}
+      </option>
+    </select>
+  </td>
+  <td scope="row">
+    <input class="form-control" *ngIf="criteriaType === 'Amount'" type="number" id="amountNumberUpdate_ + {{i}}" [(ngModel)]="field.number" name="amountNumberUpdate + {{i}}" />
+    <input class="form-control" *ngIf="criteriaType === 'Title'" type="text" id="titleTextUpdate_ + {{i}}" [(ngModel)]="field.text" name="titleTextUpdate_ + {{i}}" />
+    <input class="form-control" *ngIf="criteriaType === 'Date'" type="date" id="dateUpdate" [(ngModel)]="field.date" name="dateUpdate_ + {{i}}" />
+  </td>
+  <td scope="row">
+    <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i, criteriaType)">Delete</button>
+  </td>
+</tr>
